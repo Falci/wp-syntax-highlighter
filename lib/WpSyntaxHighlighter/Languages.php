@@ -4,7 +4,7 @@ namespace WpSyntaxHighlighter;
 
 class Languages {
 
-  public $items = [
+  public $names = [
     'ruby',
     'fix',
     'tex',
