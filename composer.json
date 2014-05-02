@@ -8,6 +8,7 @@
   },
   "autoload": {
     "psr-4": {
+      "WordPress\\": "lib/WordPress",
       "WpSyntaxHighlighter\\": "lib/WpSyntaxHighlighter"
     }
   }

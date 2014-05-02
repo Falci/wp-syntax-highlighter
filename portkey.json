@@ -18,8 +18,8 @@
     "alternate": "lib/WordPress/%s.php"
   },
 
-  "js/*.js": {
-    "type": "javascript"
+  "js/**.js": {
+    "type": "js"
   },
   "css/*.css": {
     "type": "css"
