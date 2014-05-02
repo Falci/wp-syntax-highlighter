@@ -189,7 +189,7 @@ class FauxPlugin {
       echo $message;
       $this->quit();
     } else {
-      trigger_error($message, E_USER_ERROR);
+      throw new RequirementsException();
     }
   }
 
@@ -240,4 +240,8 @@ class FauxPlugin {
 
     return $styles;
   }
+}
+
+class RequirementsException extends \Exception {
+
 }

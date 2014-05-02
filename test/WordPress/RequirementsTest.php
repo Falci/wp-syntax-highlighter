@@ -269,16 +269,13 @@ class FauxPluginTest extends \WP_UnitTestCase {
   }
 
   function test_it_triggers_error_if_not_error_scraper() {
-    set_error_handler(array($this, 'onError'));
-    $this->errorCaught = false;
-    $this->plugin->showError('foo');
+    $plugin = $this->plugin;
+    $func = function() use ($plugin) {
+      $plugin->showError('foo');
+    };
 
-    $this->assertTrue($this->errorCaught);
-  }
-
-  function onError() {
-    $this->errorCaught = true;
-    restore_error_handler();
+    $this->setExpectedException('WordPress\RequirementsException');
+    $func();
   }
 
   function test_it_displays_error_on_activation_if_scraping() {
@@ -339,15 +336,10 @@ class FauxPluginTest extends \WP_UnitTestCase {
       'attributes' => array('class' => 'error')
     );
 
+    $this->setExpectedException('WordPress\RequirementsException');
     $this->plugin->results = $results;
-    set_error_handler(array($this, 'onError'));
-    $this->errorCaught = false;
 
-    ob_start();
     $this->plugin->onActivate();
-    $html = ob_get_clean();
-
-    $this->assertTrue($this->errorCaught);
   }
 
 }
