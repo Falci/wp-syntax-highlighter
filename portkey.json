@@ -1,0 +1,31 @@
+{
+  "lib/WpSyntaxHighlighter/*.php": {
+    "type": "library",
+    "test": "test/WpSyntaxHighlighter/%sTest.php"
+  },
+  "test/WpSyntaxHighlighter/*Test.php": {
+    "type": "test",
+    "alternate": "lib/WpSyntaxHighlighter/%s.php"
+  },
+
+  "lib/WordPress/*.php": {
+    "type": "wordpress",
+    "mapping": "s",
+    "test": "test/WordPress/%sTest.php"
+  },
+  "test/WordPress/*Test.php": {
+    "type": "test",
+    "alternate": "lib/WordPress/%s.php"
+  },
+
+  "js/*.js": {
+    "type": "javascript"
+  },
+  "css/*.css": {
+    "type": "css"
+  },
+  "templates/*.twig": {
+    "type": "twig",
+    "mapping": "g"
+  }
+}
