@@ -1,3 +1,6 @@
+require 'ostruct'
+require 'erb'
+
 plugin_slug = "whats-my-ip"
 version     = ENV['VERSION']
 destination = "tmp/dist/#{version}"
@@ -138,6 +141,23 @@ namespace :npm do
   desc 'Update highlight.js'
   task 'update_hjs' do
     cp 'node_modules/highlight.js/lib/highlight.js', 'js/highlight.js'
+  end
+end
+
+namespace :generator do
+  desc 'Generate Languages'
+  task 'generate_languages' do
+    languages = Dir.glob('js/languages/*.js').map do |file|
+      File.basename(file, '.js')
+    end
+
+    template = ERB.new(File.read('lib/templates/Languages.php.erb'), nil, '-')
+    opts = OpenStruct.new({
+      :languages => languages
+    })
+
+    vars = opts.instance_eval { binding }
+    File.write('lib/WpSyntaxHighlighter/Languages.php', template.result(vars))
   end
 end
 
