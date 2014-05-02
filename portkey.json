@@ -16,13 +16,5 @@
   "test/WordPress/*Test.php": {
     "type": "test",
     "alternate": "lib/WordPress/%s.php"
-  },
-
-  "css/*.css": {
-    "type": "css"
-  },
-  "templates/*.twig": {
-    "type": "twig",
-    "mapping": "g"
   }
 }

@@ -20,6 +20,10 @@ class LanguageLoader {
       $this->loadCore();
     }
 
+    if ($this->hasLanguage($language)) {
+      return;
+    }
+
     array_push($this->languages, $language);
 
     $slug    = $this->slugFor($language);
@@ -64,6 +68,14 @@ class LanguageLoader {
     $options['languages'] = $this->languages;
 
     return $options;
+  }
+
+  function getLanguages() {
+    return $this->languages;
+  }
+
+  function hasLanguage($language) {
+    return in_array($language, $this->languages);
   }
 
 }

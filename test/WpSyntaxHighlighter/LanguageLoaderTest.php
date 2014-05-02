@@ -20,7 +20,6 @@ class LanguageLoaderTest extends \WP_UnitTestCase {
     $container->singleton('scriptLoader', 'WordPress\ScriptLoader');
     $container->singleton('loader', 'WpSyntaxHighlighter\LanguageLoader');
 
-    $loader = new LanguageLoader();
     $this->container = $container;
     $this->loader = $container->lookup('loader');
   }
@@ -63,6 +62,17 @@ class LanguageLoaderTest extends \WP_UnitTestCase {
     $this->loader->load();
 
     $this->assertTrue(wp_script_is('languages/foo', 'registered'));
+  }
+
+  function test_it_will_not_schedule_same_language_again() {
+    $this->loader->add('foo');
+    $this->loader->add('bar');
+    $this->loader->add('foo');
+    $this->loader->add('bar');
+
+    $this->loader->load();
+
+    $this->assertEquals(array('foo', 'bar'), $this->loader->getLanguages());
   }
 
   function test_it_can_schedule_highlight_js_core() {
