@@ -1,0 +1,13 @@
+{
+  "name": "wp-syntax-highlighter",
+  "version": "0.1.0",
+  "description": "WordPress Syntax Highlighter using Highlight.js",
+  "directories": {},
+  "dependencies": {
+    "highlight.js": "~8.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "author": "Darshan Sawardekar <darshan@sawardekar.org> (http://github.com/dsawardekar)",
+  "license": "GPL"
+}
