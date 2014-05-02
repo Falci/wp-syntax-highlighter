@@ -1,0 +1,13 @@
+<?php
+
+namespace WpSyntaxHighlighter;
+
+class Languages {
+
+  public $names = [
+<% languages.each do |language| -%>
+    '<%= language -%>',
+<% end -%>
+  ];
+
+}
