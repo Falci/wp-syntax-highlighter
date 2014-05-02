@@ -129,6 +129,18 @@ namespace :svn do
   end
 end
 
+namespace :npm do
+  desc 'Update languages'
+  task 'update_languages' do
+    sh 'rsync -av node_modules/highlight.js/lib/languages js'
+  end
+
+  desc 'Update highlight.js'
+  task 'update_hjs' do
+    cp 'node_modules/highlight.js/lib/highlight.js', 'js/highlight.js'
+  end
+end
+
 task :dist_check do
   fail "Version not specified" if version.nil?
 end
