@@ -12,16 +12,28 @@ class AssetLoader {
   }
 
   public function schedule($slug, $options = null) {
-    $asset = $this->assetFor($slug);
-    $asset->slug = $slug;
-
-    if (!is_null($options)) {
-      $asset->options = $options;
-    }
-
+    $asset = $this->assetFor($slug, $options);
     $this->scheduled[$slug] = $asset;
 
     return $this;
+  }
+
+  public function stream($slug, $options = null) {
+    $asset = $this->assetFor($slug, $options);
+
+    if (!is_null($options)) {
+      $this->loadAssetOption($asset, 'dependencies', $options);
+      $this->loadAssetOption($asset, 'localizer', $options);
+    }
+
+    $asset->register();
+    $asset->enqueue();
+  }
+
+  function loadAssetOption($asset, $name, $options) {
+    if (array_key_exists($name, $options)) {
+      $asset->$name = $options[$name];
+    }
   }
 
   public function dependency($slug, $dependencies) {
@@ -81,8 +93,15 @@ class AssetLoader {
   }
 
   /* abstract, implementation included for easier testing */
-  function assetFor($slug) {
-    return $this->container->lookup($this->assetType($slug));
+  function assetFor($slug, $options = null) {
+    $asset = $this->container->lookup($this->assetType($slug));
+    $asset->slug = $slug;
+
+    if (!is_null($options)) {
+      $asset->options = $options;
+    }
+
+    return $asset;
   }
 
   function assetType() {

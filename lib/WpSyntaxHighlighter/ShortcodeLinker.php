@@ -18,9 +18,9 @@ class ShortcodeLinker {
   }
 
   function linkLanguage($language) {
-    $shortcode = $this->shortcodeFor($language);
 
     if (!shortcode_exists($language)) {
+      $shortcode = $this->shortcodeFor($language);
       add_shortcode($language, array($shortcode, 'render'));
       return true;
     } else {

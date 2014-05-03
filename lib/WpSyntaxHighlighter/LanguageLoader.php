@@ -8,8 +8,8 @@ class LanguageLoader {
   public $pluginVersion;
 
   protected $didCore = false;
-  protected $scriptOptions = null;
   protected $languages = array();
+  protected $defaultScriptOptions;
 
   function needs() {
     return array('scriptLoader', 'pluginVersion');
@@ -27,40 +27,47 @@ class LanguageLoader {
     array_push($this->languages, $language);
 
     $slug    = $this->slugFor($language);
-    $options = $this->getScriptOptions();
+    $options = $this->getScriptOptions(array('highlight'));
 
-    $this->scriptLoader->schedule($slug, $options);
-    $this->scriptLoader->dependency($slug, 'highlight');
+    $this->scriptLoader->stream($slug, $options);
   }
 
   function load() {
-    $this->scriptLoader->schedule('highlight-run');
-    $this->scriptLoader->dependency('highlight-run', 'highlight');
-    $this->scriptLoader->localize(
-      'highlight-run', array($this, 'getHighlightOptions')
-    );
+    $options = $this->getScriptOptions(array('highlight'));
+    $options['localizer'] = array($this, 'getHighlightOptions');
 
-    $this->scriptLoader->load();
+    $this->scriptLoader->stream('highlight-run', $options);
   }
 
   function loadCore() {
-    $this->scriptLoader->schedule('highlight');
+    $this->scriptLoader->stream('highlight', $this->getDefaultScriptOptions());
     $this->didCore = true;
+
+    add_action('wp_footer', array($this, 'load'));
   }
 
   function slugFor($language) {
     return "languages/$language";
   }
 
-  function getScriptOptions() {
-    if (is_null($this->scriptOptions)) {
-      $this->scriptOptions = array(
+  function getDefaultScriptOptions() {
+    if (is_null($this->defaultScriptOptions)) {
+      $this->defaultScriptOptions = array(
         'version' => $this->pluginVersion,
         'in_footer' => true
       );
     }
 
-    return $this->scriptOptions;
+    return $this->defaultScriptOptions;
+  }
+
+  function getScriptOptions($dependencies = null) {
+    $options = $this->getDefaultScriptOptions();
+    if (!is_null($dependencies)) {
+      $options['dependencies'] = $dependencies;
+    }
+
+    return $options;
   }
 
   function getHighlightOptions($script) {

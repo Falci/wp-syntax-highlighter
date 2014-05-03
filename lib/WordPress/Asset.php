@@ -42,7 +42,10 @@ class Asset {
   }
 
   function localizeSlug() {
-    return str_replace('-', '_', $this->slug);
+    $str = str_replace('-', '_', $this->slug);
+    $str = str_replace('/', '_', $str);
+
+    return $str;
   }
 
   function option($key) {
