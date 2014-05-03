@@ -132,15 +132,24 @@ namespace :svn do
   end
 end
 
-namespace :npm do
-  desc 'Update languages'
-  task 'update_languages' do
-    sh 'rsync -av node_modules/highlight.js/lib/languages js'
+namespace :browserify do
+  def browserify(name, src, output)
+    browserify = 'node_modules/.bin/browserify'
+    sh "#{browserify} -s '#{name}' -o '#{output}' '#{src}'"
   end
 
   desc 'Update highlight.js'
-  task 'update_hjs' do
-    cp 'node_modules/highlight.js/lib/highlight.js', 'js/highlight.js'
+  task 'update_hljs' do
+    browserify 'highlight_js_lib', 'node_modules/highlight.js/lib/highlight.js', 'js/highlight.js'
+  end
+
+  desc 'Update highlight.js languages'
+  task 'update_languages' do
+    Dir.glob('node_modules/highlight.js/lib/languages/*.js') do |file|
+      basename = File.basename(file, '.js')
+      name = "highlight_js_lang_#{basename}"
+      browserify name, file, "js/languages/#{basename}.js"
+    end
   end
 end
 
