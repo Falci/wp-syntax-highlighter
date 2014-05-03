@@ -4,7 +4,8 @@
   "description": "WordPress Syntax Highlighter using Highlight.js",
   "directories": {},
   "dependencies": {
-    "highlight.js": "~8.0.0"
+    "highlight.js": "~8.0.0",
+    "browserify": "~3.46.0"
   },
   "devDependencies": {},
   "scripts": {},
