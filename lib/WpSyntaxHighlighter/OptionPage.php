@@ -46,7 +46,6 @@ class OptionPage {
       'settings_fields' => $this->getSettingsFields($this->pluginSlug),
       'themes' => $this->container->lookup('themes'),
       'theme' => $this->optionStore->getOption('theme'),
-      'tabReplace' => $this->getChecked('tabReplace'),
       'highlightSyntaxHighlighter' => $this->getChecked('highlightSyntaxHighlighter'),
       'highlightGeshi' => $this->getChecked('highlightGeshi')
     );

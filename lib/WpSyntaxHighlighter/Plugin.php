@@ -73,7 +73,6 @@ class Plugin {
   function getDefaultOptions() {
     return array(
       'theme' => 'default',
-      'tabReplace' => false,
       'highlightSyntaxHighlighter' => true,
       'highlightGeshi' => true
     );
@@ -118,9 +117,9 @@ class Plugin {
   }
 
   function loadTheme() {
-    $theme = $this->getTheme();
-
-    $custom = $this->hasCustomStylesheet();
+    $theme   = $this->getTheme();
+    $custom  = $this->hasCustomStylesheet();
+    $options = $this->getStylesheetOptions();
 
     if ($theme === 'custom' && $custom) {
       /* only load custom theme if present */
@@ -135,8 +134,10 @@ class Plugin {
     }
   }
 
-  function loadCustomTheme($options) {
-    $this->lookup('stylesheetLoader')->stream('theme-custom', $options);
+  function loadCustomTheme() {
+    $this->lookup('stylesheetLoader')->stream(
+      'theme-custom', $this->getStylesheetOptions()
+    );
   }
 
   function getTheme() {
@@ -170,6 +171,13 @@ class Plugin {
     array_push($themes, 'custom');
 
     return $themes;
+  }
+
+  function getStylesheetOptions() {
+    return array(
+      'version' => $this->lookup('pluginVersion'),
+      'media' => 'all'
+    );
   }
 
 }

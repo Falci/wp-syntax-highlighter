@@ -18,13 +18,21 @@ class ShortcodeLinker {
   }
 
   function linkLanguage($language) {
-
-    if (!shortcode_exists($language)) {
+    $safeName = $this->getSafeName($language);
+    if (!shortcode_exists($safeName)) {
       $shortcode = $this->shortcodeFor($language);
-      add_shortcode($language, array($shortcode, 'render'));
+      add_shortcode($safeName, array($shortcode, 'render'));
       return true;
     } else {
       return false;
+    }
+  }
+
+  function getSafeName($language) {
+    if (strlen($language) >= 2) {
+      return $language;
+    } else {
+      return $language . 'lang';
     }
   }
 

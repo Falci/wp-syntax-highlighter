@@ -7,7 +7,6 @@ class OptionSanitizer {
   protected $errors = array();
   protected $options;
   protected $checkedFields = array(
-    'tabReplace',
     'highlightSyntaxHighlighter',
     'highlightGeshi'
   );

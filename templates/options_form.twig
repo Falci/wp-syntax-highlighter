@@ -1,12 +1,6 @@
 <div class="wrap">
   <h2>WP-Syntax-Highlighter Settings</h2>
   <form method="POST" action="options.php">
-  {#
-  <p>theme: {{ theme }}</p>
-  <p>tabReplace: {{ tabReplace }}</p>
-  <p>highlightSyntaxHighlighter: {{ highlightSyntaxHighlighter }}</p>
-  <p>highlightGeshi: {{ highlightGeshi }}</p>
-  #}
   {{ settings_fields | raw }}
   <table class="form-table">
     <tbody>
@@ -26,15 +20,6 @@
       </tr>
       <tr>
         <th scope="row">
-          <label for="tabReplace">Tab Replace</label>
-        </th>
-        <td>
-          <input type="checkbox" id="tabReplace" name="wp_syntax_highlighter_options[tabReplace]"
-          {{ tabReplace }} />
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
           <label for="highlightSyntaxHighlighter">Highlight Syntax Highlighter Code Blocks</label>
         </th>
         <td>
@@ -44,7 +29,7 @@
       </tr>
       <tr>
         <th scope="row">
-          <label for="highlightGeshi">Highlight GeSHi Blocks</label>
+          <label for="highlightGeshi">Highlight GeSHi Code Blocks</label>
         </th>
         <td>
           <input type="checkbox" id="highlightGeshi" name="wp_syntax_highlighter_options[highlightGeshi]"
