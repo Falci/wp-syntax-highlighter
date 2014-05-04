@@ -33,6 +33,7 @@ class LanguageDetectorTest extends \WP_UnitTestCase {
     $container->singleton('optionStore', 'WpSyntaxHighlighter\OptionStore');
     $container->singleton('optionSanitizer', 'WpSyntaxHighlighter\OptionSanitizer');
     $container->singleton('languageDetector', 'WpSyntaxHighlighter\LanguageDetector');
+    $container->object('themes', array('foo'));
 
     $this->container = $container;
     $this->detector = $container->lookup('languageDetector');

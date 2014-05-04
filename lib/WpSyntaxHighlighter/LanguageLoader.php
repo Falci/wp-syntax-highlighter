@@ -34,10 +34,12 @@ class LanguageLoader {
     $this->scriptLoader->stream($slug, $options);
   }
 
-  function load($localizer) {
+  function load($localizer = null) {
     $options = $this->getScriptOptions(array('highlight'));
-    $options['localizer'] = $localizer;
-    Logger::log('LanguageLoader::load', $options);
+
+    if (!is_null($localizer)) {
+      $options['localizer'] = $localizer;
+    }
 
     $this->scriptLoader->stream('highlight-run', $options);
   }

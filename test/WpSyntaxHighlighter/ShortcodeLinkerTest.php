@@ -18,6 +18,8 @@ class ShortcodeLinkerTest extends \WP_UnitTestCase {
     $container->object('pluginVersion', '0.1.0');
     $container->factory('script', 'WordPress\Script');
     $container->singleton('scriptLoader', 'WordPress\ScriptLoader');
+    $container->factory('stylesheet', 'WordPress\Stylesheet');
+    $container->singleton('stylesheetLoader', 'WordPress\StylesheetLoader');
     $container->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader');
     $container->factory('shortcode', 'WpSyntaxHighlighter\Shortcode');
     $container->singleton('linker', 'WpSyntaxHighlighter\ShortcodeLinker');

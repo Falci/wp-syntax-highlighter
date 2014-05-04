@@ -12,6 +12,10 @@ class OptionSanitizer {
     'highlightGeshi'
   );
 
+  function needs() {
+    return array('themes');
+  }
+
   public function sanitize(&$options, &$target) {
     $this->errors = array();
     $this->options = $options;
@@ -52,16 +56,8 @@ class OptionSanitizer {
   }
 
   function validateTheme($value) {
-    return $this->validateChoice($value, Themes::$names);
+    return $this->validateChoice($value, $this->themes);
   }
-
-  //function validateHighlightSyntaxHighlighter($value) {
-    //return $this->validateChecked($value);
-  //}
-
-  //function validateHighlightGeshi($value) {
-    //return $this->validateChecked($value);
-  //}
 
   function toChecked($key) {
     if (array_key_exists($key, $this->options)) {
@@ -123,14 +119,6 @@ class OptionSanitizer {
 
   function isChoiceType($value, $defaults) {
     return in_array($value, $defaults);
-  }
-
-  function getAnimationTypes() {
-    return array('fade', 'none');
-  }
-
-  function getStyles() {
-    return array('tab', 'pill', 'link', 'image', 'custom');
   }
 
 }

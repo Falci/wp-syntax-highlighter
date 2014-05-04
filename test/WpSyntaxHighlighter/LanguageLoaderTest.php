@@ -18,6 +18,8 @@ class LanguageLoaderTest extends \WP_UnitTestCase {
     $container->object('pluginVersion', '0.1.0');
     $container->factory('script', 'WordPress\Script');
     $container->singleton('scriptLoader', 'WordPress\ScriptLoader');
+    $container->factory('stylesheet', 'WordPress\Stylesheet');
+    $container->singleton('stylesheetLoader', 'WordPress\StylesheetLoader');
     $container->singleton('loader', 'WpSyntaxHighlighter\LanguageLoader');
 
     $this->container = $container;
@@ -45,14 +47,6 @@ class LanguageLoaderTest extends \WP_UnitTestCase {
     $options = $this->loader->getScriptOptions();
     $this->assertEquals('0.1.0', $options['version']);
     $this->assertTrue($options['in_footer']);
-  }
-
-  function test_it_can_build_highlight_options() {
-    $this->loader->add('foo');
-    $this->loader->add('bar');
-
-    $options = $this->loader->getHighlightOptions('foo');
-    $this->assertEquals(array('foo', 'bar'), $options['languages']);
   }
 
   function test_it_can_schedule_languages_in_script_loader() {

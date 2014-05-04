@@ -33,8 +33,8 @@ class Plugin {
       ->object('pluginSlug', 'wp_syntax_highlighter')
       ->object('pluginDir', untrailingslashit(plugin_dir_path($pluginFile)))
       ->object('pluginVersion', time())
-      ->object('languages', Languages::$names)
-      ->object('themes', Themes::$names)
+      ->object('languages', $this->getLanguages())
+      ->object('themes', $this->getThemes())
       ->object('defaultOptions', $this->getDefaultOptions())
       ->object('optionName', 'wp_syntax_highlighter_options')
 
@@ -53,7 +53,7 @@ class Plugin {
       ->singleton('optionStore', 'WpSyntaxHighlighter\OptionStore')
       ->singleton('optionPage', 'WpSyntaxHighlighter\OptionPage')
       ->singleton('optionSanitizer', 'WpSyntaxHighlighter\OptionSanitizer')
-      ->singleton('adminScriptLoader', 'WordPress\ScriptLoader')
+      ->singleton('adminScriptLoader', 'WordPress\AdminScriptLoader')
 
       ->singleton('languageDetector', 'WpSyntaxHighlighter\LanguageDetector');
 
@@ -90,7 +90,8 @@ class Plugin {
     );
 
     $loader = $this->lookup('adminScriptLoader');
-    $loader->stream('wp-syntax-highlighter-options', $options);
+    $loader->schedule('wp-syntax-highlighter-options', $options);
+    $loader->load();
   }
 
   function initOptionPage() {
@@ -118,16 +119,39 @@ class Plugin {
 
   function loadTheme() {
     $theme = $this->getTheme();
-    $options = array(
-      'version' => $this->lookup('pluginVersion'),
-      'media' => 'all'
-    );
 
-    $this->lookup('stylesheetLoader')->stream($theme, $options);
+    $custom = $this->hasCustomStylesheet();
+
+    if ($theme === 'custom' && $custom) {
+      /* only load custom theme if present */
+      $this->loadCustomTheme($options);
+    } else {
+      $this->lookup('stylesheetLoader')->stream($theme, $options);
+
+      /* overriding stylesheet so include */
+      if ($custom) {
+        $this->loadCustomTheme($options);
+      }
+    }
+  }
+
+  function loadCustomTheme($options) {
+    $this->lookup('stylesheetLoader')->stream('theme-custom', $options);
   }
 
   function getTheme() {
     return $this->lookup('optionStore')->getOption('theme');
+  }
+
+  function hasCustomStylesheet() {
+    return file_exists($this->getCustomThemePath());
+  }
+
+  function getCustomThemePath() {
+    $path  = get_stylesheet_directory();
+    $path .= '/wp-syntax-highlighter/custom.css';
+
+    return $path;
   }
 
   function getPluginOptions($script) {
@@ -137,13 +161,15 @@ class Plugin {
     return $options;
   }
 
-  function filterContent($content) {
-//if (is_singular() && is_main_query() && !$this->filtered) {
-  //$this->loadScripts();
-  //$this->filtered = true;
-//}
+  function getLanguages() {
+    return Languages::$names;
+  }
 
-//return $content;
+  function getThemes() {
+    $themes = Themes::$names;
+    array_push($themes, 'custom');
+
+    return $themes;
   }
 
 }

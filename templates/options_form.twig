@@ -17,8 +17,9 @@
         <td>
           <select name="wp_syntax_highlighter_options[theme]" id="theme">
             {% for themeName in themes|sort %}
-              <option value="{{ themeName }}"
-              {{ themeName == theme ? 'selected' : '' }}>{{ themeName | capitalize }}</option>
+              <option value="{{ themeName}}"
+              {{ themeName == theme ? 'selected' : '' }}>
+              {{ themeName | replace({'_': ' ', '.': ' ', '-': ' '}) | capitalize }}</option>
             {% endfor %}
           </select>
         </td>
