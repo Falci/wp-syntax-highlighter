@@ -168,6 +168,21 @@ namespace :generator do
     vars = opts.instance_eval { binding }
     File.write('lib/WpSyntaxHighlighter/Languages.php', template.result(vars))
   end
+
+  desc 'Generate Themes'
+  task 'generate_themes' do
+    themes = Dir.glob('css/*.css').map do |file|
+      File.basename(file, '.css')
+    end
+
+    template = ERB.new(File.read('lib/templates/Themes.php.erb'), nil, '-')
+    opts = OpenStruct.new({
+      :themes => themes
+    })
+
+    vars = opts.instance_eval { binding }
+    File.write('lib/WpSyntaxHighlighter/Themes.php', template.result(vars))
+  end
 end
 
 task :dist_check do
@@ -203,4 +218,3 @@ task :init => [
   'composer:update',
   'bower:update'
 ]
-

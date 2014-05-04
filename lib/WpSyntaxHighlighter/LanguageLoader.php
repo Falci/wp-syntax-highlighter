@@ -2,6 +2,8 @@
 
 namespace WpSyntaxHighlighter;
 
+use WordPress\Logger;
+
 class LanguageLoader {
 
   public $scriptLoader;
@@ -12,7 +14,7 @@ class LanguageLoader {
   protected $defaultScriptOptions;
 
   function needs() {
-    return array('scriptLoader', 'pluginVersion');
+    return array('scriptLoader', 'stylesheetLoader', 'pluginVersion');
   }
 
   function add($language) {
@@ -32,9 +34,10 @@ class LanguageLoader {
     $this->scriptLoader->stream($slug, $options);
   }
 
-  function load() {
+  function load($localizer) {
     $options = $this->getScriptOptions(array('highlight'));
-    $options['localizer'] = array($this, 'getHighlightOptions');
+    $options['localizer'] = $localizer;
+    Logger::log('LanguageLoader::load', $options);
 
     $this->scriptLoader->stream('highlight-run', $options);
   }
@@ -42,8 +45,6 @@ class LanguageLoader {
   function loadCore() {
     $this->scriptLoader->stream('highlight', $this->getDefaultScriptOptions());
     $this->didCore = true;
-
-    add_action('wp_footer', array($this, 'load'));
   }
 
   function slugFor($language) {
@@ -66,13 +67,6 @@ class LanguageLoader {
     if (!is_null($dependencies)) {
       $options['dependencies'] = $dependencies;
     }
-
-    return $options;
-  }
-
-  function getHighlightOptions($script) {
-    $options = array();
-    $options['languages'] = $this->languages;
 
     return $options;
   }

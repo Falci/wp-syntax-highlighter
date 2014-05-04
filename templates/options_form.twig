@@ -1,0 +1,61 @@
+<div class="wrap">
+  <h2>WP-Syntax-Highlighter Settings</h2>
+  <form method="POST" action="options.php">
+  {#
+  <p>theme: {{ theme }}</p>
+  <p>tabReplace: {{ tabReplace }}</p>
+  <p>highlightSyntaxHighlighter: {{ highlightSyntaxHighlighter }}</p>
+  <p>highlightGeshi: {{ highlightGeshi }}</p>
+  #}
+  {{ settings_fields | raw }}
+  <table class="form-table">
+    <tbody>
+      <tr>
+        <th scope="row">
+          <label for="theme">Theme</label>
+        </th>
+        <td>
+          <select name="wp_syntax_highlighter_options[theme]" id="theme">
+            {% for themeName in themes|sort %}
+              <option value="{{ themeName }}"
+              {{ themeName == theme ? 'selected' : '' }}>{{ themeName | capitalize }}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <label for="tabReplace">Tab Replace</label>
+        </th>
+        <td>
+          <input type="checkbox" id="tabReplace" name="wp_syntax_highlighter_options[tabReplace]"
+          {{ tabReplace }} />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <label for="highlightSyntaxHighlighter">Highlight Syntax Highlighter Code Blocks</label>
+        </th>
+        <td>
+          <input type="checkbox" id="highlightSyntaxHighlighter" name="wp_syntax_highlighter_options[highlightSyntaxHighlighter]"
+          {{ highlightSyntaxHighlighter }} />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <label for="highlightGeshi">Highlight GeSHi Blocks</label>
+        </th>
+        <td>
+          <input type="checkbox" id="highlightGeshi" name="wp_syntax_highlighter_options[highlightGeshi]"
+          {{ highlightGeshi }} />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="submit">
+    <input type="hidden" id="restoreDefaults" name="wp_syntax_highlighter_options[restoreDefaults]" value="0" />
+    <input name="submit" id="submit" class="button button-primary" value="Save Changes" type="submit">
+    <input name="reset" id="reset" class="button" value="Restore Defaults" type="submit">
+  </p>
+  </form>
+</div>

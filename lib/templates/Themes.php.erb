@@ -1,0 +1,13 @@
+<?php
+
+namespace WpSyntaxHighlighter;
+
+class Themes {
+
+  static public $names = [
+<% themes.each do |theme| -%>
+    '<%= theme -%>',
+<% end -%>
+  ];
+
+}
