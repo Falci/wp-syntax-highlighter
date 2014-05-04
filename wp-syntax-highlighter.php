@@ -2,7 +2,7 @@
 /*
 Plugin Name: wp-syntax-highlighter
 Description: WordPress Syntax Highlighter using Highlight.js
-Version: 0.1.3
+Version: 0.1.1
 Author: Darshan Sawardekar
 Author URI: http://pressing-matters.io/
 Plugin URI: http://wordpress.org/plugins/wp-syntax-highlighter
@@ -14,7 +14,6 @@ require_once(__DIR__ .  '/lib/WordPress/Requirements.php');
 use WordPress\MinRequirements;
 use WordPress\FauxPlugin;
 use WpSyntaxHighlighter\Plugin;
-use WpSyntaxHighlighter\StreamPlugin;
 
 function wp_syntax_highlighter_load() {
   require_once(__DIR__ . '/vendor/autoload.php');
