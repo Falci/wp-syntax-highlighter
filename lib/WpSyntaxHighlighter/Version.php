@@ -4,6 +4,6 @@ namespace WpSyntaxHighlighter;
 
 class Version {
 
-  static public $version = '0.1.1';
+  static public $version = '0.1.2';
 
 }
