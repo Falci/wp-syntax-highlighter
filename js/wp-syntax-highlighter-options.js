@@ -15,5 +15,3 @@
   });
 
 }(jQuery));
-
-console.log('wp-syntax-highlighter-options');

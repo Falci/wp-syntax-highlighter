@@ -11,11 +11,11 @@ class OptionPage {
   }
 
   function getPageTitle() {
-    return 'wp-syntax-highlighter | Settings';
+    return 'WP Syntax Highlighter | Settings';
   }
 
   function getMenuTitle() {
-    return 'wp-syntax-highlighter';
+    return 'WP Syntax Highlighter';
   }
 
   function getCapability() {

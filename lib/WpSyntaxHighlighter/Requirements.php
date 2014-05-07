@@ -1,6 +1,6 @@
 <?php
 
-namespace WordPress;
+namespace WpSyntaxHighlighter;
 
 class Requirements {
 
@@ -217,9 +217,7 @@ class FauxPlugin {
   }
 
   function resultToNotice($result) {
-    $satisfied = $result['satisfied'];
     $message   = $result['requirement']->message();
-
     return "<li>$message</li>";
   }
 
@@ -236,7 +234,7 @@ class FauxPlugin {
 
   function getStyles() {
     $styles  = 'body { font-family: sans-serif; font-size: 12px; color: #a00; }; ';
-    $styles  = "<style type='text/css'>$styles</style>";
+    $styles  = "<style type='text/css' scoped>$styles</style>";
 
     return $styles;
   }

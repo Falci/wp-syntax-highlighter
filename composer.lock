@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "3df87a3b488f10c3ce2f0507ab188d7d",
+    "hash": "1d8fbd7acfad5afcb1b3fa5424928394",
     "packages": [
         {
             "name": "dsawardekar/encase-php",
@@ -97,6 +97,50 @@
                 "wordpress"
             ],
             "time": "2014-04-24 14:34:05"
+        },
+        {
+            "name": "dsawardekar/wp-requirements",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dsawardekar/wp-requirements.git",
+                "reference": "64ed51fbf4e595111c972cb742448c54983b962a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dsawardekar/wp-requirements/zipball/64ed51fbf4e595111c972cb742448c54983b962a",
+                "reference": "64ed51fbf4e595111c972cb742448c54983b962a",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MyWordPressPlugin\\": "lib/MyWordPressPlugin"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Darshan Sawardekar",
+                    "email": "darshan@sawardekar.org",
+                    "homepage": "http://pressing-matters.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Library for handling minimum system requirements in WordPress Plugins",
+            "homepage": "http://github.com/dsawardekar/wp-requirements",
+            "keywords": [
+                "minimum",
+                "system requirements",
+                "wordpress"
+            ],
+            "time": "2014-05-07 11:47:58"
         },
         {
             "name": "twig/twig",
