@@ -1,7 +1,7 @@
 require 'ostruct'
 require 'erb'
 
-plugin_slug = "whats-my-ip"
+plugin_slug = "wp-syntax-highlighter"
 version     = ENV['VERSION']
 destination = "tmp/dist/#{version}"
 
@@ -86,6 +86,14 @@ namespace :composer do
       sh 'git add composer.lock'
       sh 'git commit -m "Fresh composer update"'
     end
+  end
+
+  desc "Update Requirements.php"
+  task :update_requirements do
+    source = 'vendor/dsawardekar/wp-requirements/lib/MyWordPressPlugin/Requirements.php'
+    contents = File.read(source)
+    contents = contents.gsub('MyWordPressPlugin', 'WpSyntaxHighlighter')
+    File.write('lib/WpSyntaxHighlighter/Requirements.php', contents)
   end
 end
 
