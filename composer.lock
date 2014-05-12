@@ -51,16 +51,16 @@
         },
         {
             "name": "dsawardekar/wordpress-twig-helper",
-            "version": "0.1.1",
+            "version": "0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dsawardekar/wordpress-twig-helper.git",
-                "reference": "30ccbfbb12bb3f22ef7ca964172e8844027e53bb"
+                "reference": "b036a82f0bf8c0756eae7e9e0f4e599b3a9758a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dsawardekar/wordpress-twig-helper/zipball/30ccbfbb12bb3f22ef7ca964172e8844027e53bb",
-                "reference": "30ccbfbb12bb3f22ef7ca964172e8844027e53bb",
+                "url": "https://api.github.com/repos/dsawardekar/wordpress-twig-helper/zipball/b036a82f0bf8c0756eae7e9e0f4e599b3a9758a4",
+                "reference": "b036a82f0bf8c0756eae7e9e0f4e599b3a9758a4",
                 "shasum": ""
             },
             "require": {
@@ -70,12 +70,12 @@
                 "phpunit/phpunit": "~3.7.0"
             },
             "bin": [
-                "wordpress-twig-helper/bin/twig_compile"
+                "bin/twig_compile"
             ],
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "WordPress\\": "lib/WordPress"
+                    "WpTwigHelper\\": "lib/WpTwigHelper"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -96,7 +96,7 @@
                 "twig",
                 "wordpress"
             ],
-            "time": "2014-04-24 14:34:05"
+            "time": "2014-05-10 09:20:15"
         },
         {
             "name": "dsawardekar/wp-requirements",
