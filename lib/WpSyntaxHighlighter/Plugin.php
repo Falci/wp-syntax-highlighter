@@ -27,7 +27,7 @@ class Plugin {
     $this->container
       ->object('pluginMeta', new PluginMeta($file))
       ->object('assetManager', new AssetManager($this->container))
-      ->object('optionsManager', new OptionsManger($this->container))
+      ->object('optionsManager', new OptionsManager($this->container))
       ->factory('shortcode', 'WpSyntaxHighlighter\Shortcode')
       ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
       ->singleton('shortcodeLinker', 'WpSyntaxHighlighter\ShortcodeLinker')
@@ -39,12 +39,17 @@ class Plugin {
   }
 
   function enable() {
-    add_action('init', array($this, 'initFrontEnd'));
+    add_action('admin_init', array($this, 'initAdmin'));
     add_action('admin_menu', array($this, 'initAdminMenu'));
+    add_action('init', array($this, 'initFrontEnd'));
+  }
+
+  function initAdmin() {
+    $this->lookup('optionsPostHandler')->enable();
   }
 
   function initAdminMenu() {
-    $this->lookup('optionPage')->register();
+    $this->lookup('optionsPage')->register();
   }
 
   function initFrontEnd() {
@@ -74,7 +79,7 @@ class Plugin {
 
       /* overriding stylesheet so include */
       if ($custom) {
-        $this->loadCustomTheme($options);
+        $this->loadCustomTheme();
       }
     }
   }

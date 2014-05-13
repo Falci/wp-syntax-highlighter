@@ -32,7 +32,7 @@ function wp_syntax_highlighter_register() {
 function wp_syntax_highlighter_load() {
   require_once(__DIR__ . '/vendor/autoload.php');
 
-  $plugin = \WpScrollUp\Plugin::create(__FILE__);
+  $plugin = \WpSyntaxHighlighter\Plugin::create(__FILE__);
   $plugin->enable();
 }
 

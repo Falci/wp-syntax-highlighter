@@ -29,18 +29,21 @@ class LanguageLoader {
     array_push($this->languages, $language);
 
     $slug    = $this->slugFor($language);
-    $this->scriptLoader->stream($slug, array('highlight'));
+    $this->scriptLoader->stream($slug, array(
+      'dependencies' => 'highlight')
+    );
   }
 
   function load($localizer = null) {
     $options = array();
+    $options['dependencies'] = array('highlight');
 
     if (!is_null($localizer)) {
       $options['localizer'] = $localizer;
     }
 
     $this->scriptLoader->stream(
-      'highlight-options', array('highlight'), $options
+      'highlight-options', $options
     );
   }
 

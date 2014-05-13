@@ -2,7 +2,7 @@
 
 namespace WpSyntaxHighlighter;
 
-class OptionPage {
+class OptionsPage extends \Arrow\OptionsManager\OptionsPage {
 
   function getTemplateContext() {
     $context = array(
