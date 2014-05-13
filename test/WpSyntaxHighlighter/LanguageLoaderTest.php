@@ -6,21 +6,20 @@ use Encase\Container;
 
 class LanguageLoaderTest extends \WP_UnitTestCase {
 
+  public $pluginMeta;
+  public $container;
+  public $loader;
+
   function setUp() {
     parent::setUp();
 
-    $this->pluginSlug = 'wp-syntax-highlighter';
-    $this->pluginFile = getcwd() . '/' . $this->pluginSlug . '.php';
+    $this->pluginMeta = new PluginMeta('wp-syntax-highlighter.php');
 
     $container = new Container();
-    $container->object('pluginSlug', $this->pluginSlug);
-    $container->object('pluginFile', $this->pluginFile);
-    $container->object('pluginVersion', '0.1.0');
-    $container->factory('script', 'WordPress\Script');
-    $container->singleton('scriptLoader', 'WordPress\ScriptLoader');
-    $container->factory('stylesheet', 'WordPress\Stylesheet');
-    $container->singleton('stylesheetLoader', 'WordPress\StylesheetLoader');
-    $container->singleton('loader', 'WpSyntaxHighlighter\LanguageLoader');
+    $container
+      ->object('pluginMeta', $this->pluginMeta)
+      ->object('assetManager', new \Arrow\AssetManager\AssetManager($container))
+      ->singleton('loader', 'WpSyntaxHighlighter\LanguageLoader');
 
     $this->container = $container;
     $this->loader = $container->lookup('loader');
@@ -30,23 +29,9 @@ class LanguageLoaderTest extends \WP_UnitTestCase {
     $this->assertEquals($this->container, $this->loader->container);
   }
 
-  function test_it_has_a_script_loader() {
-    $this->assertInstanceOf('WordPress\ScriptLoader', $this->loader->scriptLoader);
-  }
-
-  function test_it_has_plugin_version() {
-    $this->assertEquals('0.1.0', $this->loader->pluginVersion);
-  }
-
   function test_it_can_build_slug_for_language_name() {
     $actual = $this->loader->slugFor('foo');
     $this->assertEquals('languages/foo', $actual);
-  }
-
-  function test_it_can_build_script_options() {
-    $options = $this->loader->getScriptOptions();
-    $this->assertEquals('0.1.0', $options['version']);
-    $this->assertTrue($options['in_footer']);
   }
 
   function test_it_can_schedule_languages_in_script_loader() {
@@ -82,7 +67,7 @@ class LanguageLoaderTest extends \WP_UnitTestCase {
     $this->loader->add('bar');
 
     $this->loader->load();
-    $this->assertTrue(wp_script_is('highlight-run', 'registered'));
+    $this->assertTrue(wp_script_is('highlight-options', 'registered'));
   }
 
 }

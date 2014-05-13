@@ -6,24 +6,24 @@ use Encase\Container;
 
 class ShortcodeLinkerTest extends \WP_UnitTestCase {
 
+  public $pluginMeta;
+  public $container;
+  public $loader;
+  public $shortcode;
+  public $linker;
+
   function setUp() {
     parent::setUp();
 
-    $this->pluginSlug = 'wp-syntax-highlighter';
-    $this->pluginFile = getcwd() . '/' . $this->pluginSlug . '.php';
+    $this->pluginMeta = new PluginMeta('wp-syntax-highlighter.php');
 
     $container = new Container();
-    $container->object('pluginSlug', $this->pluginSlug);
-    $container->object('pluginFile', $this->pluginFile);
-    $container->object('pluginVersion', '0.1.0');
-    $container->factory('script', 'WordPress\Script');
-    $container->singleton('scriptLoader', 'WordPress\ScriptLoader');
-    $container->factory('stylesheet', 'WordPress\Stylesheet');
-    $container->singleton('stylesheetLoader', 'WordPress\StylesheetLoader');
-    $container->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader');
-    $container->factory('shortcode', 'WpSyntaxHighlighter\Shortcode');
-    $container->singleton('linker', 'WpSyntaxHighlighter\ShortcodeLinker');
-    $container->object('languages', array('foo', 'bar'));
+    $container
+      ->object('pluginMeta', $this->pluginMeta)
+      ->object('assetLoader', new \Arrow\AssetManager\AssetManager($container))
+      ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
+      ->factory('shortcode', 'WpSyntaxHighlighter\Shortcode')
+      ->singleton('linker', 'WpSyntaxHighlighter\ShortcodeLinker');
 
     $this->container = $container;
     $this->loader    = $container->lookup('languageLoader');
@@ -33,10 +33,6 @@ class ShortcodeLinkerTest extends \WP_UnitTestCase {
 
   function test_it_has_a_container() {
     $this->assertEquals($this->container, $this->shortcode->container);
-  }
-
-  function test_it_has_language_names() {
-    $this->assertEquals(array('foo', 'bar'), $this->linker->languages);
   }
 
   function test_it_can_create_shortcode_object_for_language() {
@@ -62,8 +58,8 @@ class ShortcodeLinkerTest extends \WP_UnitTestCase {
   function test_it_can_link_languages_to_shortcodes() {
     $this->linker->link();
 
-    $this->assertTrue(shortcode_exists('foo'));
-    $this->assertTrue(shortcode_exists('bar'));
+    $this->assertTrue(shortcode_exists('javascript'));
+    $this->assertTrue(shortcode_exists('coffeescript'));
   }
 
 }
