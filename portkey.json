@@ -6,15 +6,5 @@
   "test/WpSyntaxHighlighter/*Test.php": {
     "type": "test",
     "alternate": "lib/WpSyntaxHighlighter/%s.php"
-  },
-
-  "lib/WordPress/*.php": {
-    "type": "wordpress",
-    "mapping": "s",
-    "test": "test/WordPress/%sTest.php"
-  },
-  "test/WordPress/*Test.php": {
-    "type": "test",
-    "alternate": "lib/WordPress/%s.php"
   }
 }
