@@ -4,15 +4,15 @@ namespace WpSyntaxHighlighter;
 
 class ShortcodeLinker {
 
-  public $languages;
+  public $pluginMeta;
   protected $shortcodes;
 
   function needs() {
-    return array('languages');
+    return array('pluginMeta');
   }
 
   function link() {
-    foreach ($this->languages as $language) {
+    foreach ($this->pluginMeta->getLanguages() as $language) {
       $this->linkLanguage($language);
     }
   }

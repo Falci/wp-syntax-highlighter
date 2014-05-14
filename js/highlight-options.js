@@ -23,7 +23,7 @@
   };
 
   LanguageFinder.prototype.getNames = function() {
-    return highlight_run.languages;
+    return highlight_options.languages;
   };
 
   LanguageFinder.prototype.getLanguageName = function(name) {
@@ -113,8 +113,8 @@
 
   CodeBlockFinder.prototype.isDetectable = function(name) {
     var prop = 'highlight' + name;
-    if (highlight_run.hasOwnProperty(prop)) {
-      return highlight_run[prop];
+    if (highlight_options.hasOwnProperty(prop)) {
+      return highlight_options[prop];
     } else {
       return false;
     }

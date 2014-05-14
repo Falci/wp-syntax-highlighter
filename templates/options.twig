@@ -1,7 +1,7 @@
 <div class="wrap">
   <h2>WP-Syntax-Highlighter Settings</h2>
-  <form method="POST" action="options.php">
-  {{ settings_fields | raw }}
+  <form method="POST" action="{{ formUrl }}">
+  {{ nonceField | raw }}
   <table class="form-table">
     <tbody>
       <tr>
@@ -9,7 +9,7 @@
           <label for="theme">Theme</label>
         </th>
         <td>
-          <select name="wp_syntax_highlighter_options[theme]" id="theme">
+          <select name="theme" id="theme">
             {% for themeName in themes|sort %}
               <option value="{{ themeName}}"
               {{ themeName == theme ? 'selected' : '' }}>
@@ -23,8 +23,8 @@
           <label for="highlightSyntaxHighlighter">Highlight Syntax Highlighter Code Blocks</label>
         </th>
         <td>
-          <input type="checkbox" id="highlightSyntaxHighlighter" name="wp_syntax_highlighter_options[highlightSyntaxHighlighter]"
-          {{ highlightSyntaxHighlighter }} />
+          <input type="checkbox" id="highlightSyntaxHighlighter" name="highlightSyntaxHighlighter"
+          {{ highlightSyntaxHighlighter ? 'checked' : '' }} />
         </td>
       </tr>
       <tr>
@@ -32,14 +32,13 @@
           <label for="highlightGeshi">Highlight GeSHi Code Blocks</label>
         </th>
         <td>
-          <input type="checkbox" id="highlightGeshi" name="wp_syntax_highlighter_options[highlightGeshi]"
-          {{ highlightGeshi }} />
+          <input type="checkbox" id="highlightGeshi" name="highlightGeshi"
+          {{ highlightGeshi ? 'checked' : '' }} />
         </td>
       </tr>
     </tbody>
   </table>
   <p class="submit">
-    <input type="hidden" id="restoreDefaults" name="wp_syntax_highlighter_options[restoreDefaults]" value="0" />
     <input name="submit" id="submit" class="button button-primary" value="Save Changes" type="submit">
     <input name="reset" id="reset" class="button" value="Restore Defaults" type="submit">
   </p>

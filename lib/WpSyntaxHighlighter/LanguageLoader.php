@@ -7,14 +7,14 @@ use WordPress\Logger;
 class LanguageLoader {
 
   public $scriptLoader;
+  public $stylesheetLoader;
   public $pluginVersion;
 
   protected $didCore = false;
   protected $languages = array();
-  protected $defaultScriptOptions;
 
   function needs() {
-    return array('scriptLoader', 'stylesheetLoader', 'pluginVersion');
+    return array('scriptLoader', 'stylesheetLoader');
   }
 
   function add($language) {
@@ -29,48 +29,31 @@ class LanguageLoader {
     array_push($this->languages, $language);
 
     $slug    = $this->slugFor($language);
-    $options = $this->getScriptOptions(array('highlight'));
-
-    $this->scriptLoader->stream($slug, $options);
+    $this->scriptLoader->stream($slug, array(
+      'dependencies' => 'highlight')
+    );
   }
 
   function load($localizer = null) {
-    $options = $this->getScriptOptions(array('highlight'));
+    $options = array();
+    $options['dependencies'] = array('highlight');
 
     if (!is_null($localizer)) {
       $options['localizer'] = $localizer;
     }
 
-    $this->scriptLoader->stream('highlight-run', $options);
+    $this->scriptLoader->stream(
+      'highlight-options', $options
+    );
   }
 
   function loadCore() {
-    $this->scriptLoader->stream('highlight', $this->getDefaultScriptOptions());
+    $this->scriptLoader->stream('highlight');
     $this->didCore = true;
   }
 
   function slugFor($language) {
     return "languages/$language";
-  }
-
-  function getDefaultScriptOptions() {
-    if (is_null($this->defaultScriptOptions)) {
-      $this->defaultScriptOptions = array(
-        'version' => $this->pluginVersion,
-        'in_footer' => true
-      );
-    }
-
-    return $this->defaultScriptOptions;
-  }
-
-  function getScriptOptions($dependencies = null) {
-    $options = $this->getDefaultScriptOptions();
-    if (!is_null($dependencies)) {
-      $options['dependencies'] = $dependencies;
-    }
-
-    return $options;
   }
 
   function getLanguages() {

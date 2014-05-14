@@ -6,34 +6,22 @@ use Encase\Container;
 
 class LanguageDetectorTest extends \WP_UnitTestCase {
 
+  public $pluginMeta;
+  public $container;
+  public $detector;
+
   function setUp() {
     parent::setUp();
 
-    $this->pluginSlug = 'wp-syntax-highlighter';
-    $this->pluginFile = getcwd() . '/' . $this->pluginSlug . '.php';
-
-    $defaultOptions = array(
-      'theme' => 'default',
-      'tabReplace' => false,
-      'highlightSyntaxHighlighter' => true,
-      'highlightGeshi' => true
-    );
+    $this->pluginMeta = new PluginMeta('wp-syntax-highlighter.php');
 
     $container = new Container();
-    $container->object('pluginSlug', $this->pluginSlug);
-    $container->object('pluginFile', $this->pluginFile);
-    $container->object('pluginVersion', '0.1.0');
-    $container->factory('script', 'WordPress\Script');
-    $container->singleton('scriptLoader', 'WordPress\ScriptLoader');
-    $container->factory('stylesheet', 'WordPress\Stylesheet');
-    $container->singleton('stylesheetLoader', 'WordPress\StylesheetLoader');
-    $container->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader');
-    $container->object('optionName', 'wp_syntax_highlighter_options');
-    $container->object('defaultOptions', $defaultOptions);
-    $container->singleton('optionStore', 'WpSyntaxHighlighter\OptionStore');
-    $container->singleton('optionSanitizer', 'WpSyntaxHighlighter\OptionSanitizer');
-    $container->singleton('languageDetector', 'WpSyntaxHighlighter\LanguageDetector');
-    $container->object('themes', array('foo'));
+    $container
+      ->object('pluginMeta', $this->pluginMeta)
+      ->object('assetManager', new \Arrow\AssetManager\AssetManager($container))
+      ->object('optionsManager', new OptionsManager($container))
+      ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
+      ->singleton('languageDetector', 'WpSyntaxHighlighter\LanguageDetector');
 
     $this->container = $container;
     $this->detector = $container->lookup('languageDetector');
@@ -60,26 +48,26 @@ class LanguageDetectorTest extends \WP_UnitTestCase {
   }
 
   function test_it_knows_if_type_is_detectable() {
-    $optionStore = $this->container->lookup('optionStore');
-    $optionStore->setOption('highlightSyntaxHighlighter', true);
+    $optionsStore = $this->container->lookup('optionsStore');
+    $optionsStore->setOption('highlightSyntaxHighlighter', true);
 
     $actual = $this->detector->isDetectable('SyntaxHighlighter');
     $this->assertTrue($actual);
   }
 
   function test_it_knows_if_type_is_not_detectable() {
-    $optionStore = $this->container->lookup('optionStore');
-    $optionStore->load();
-    $optionStore->setOption('highlightSyntaxHighlighter', false);
+    $optionsStore = $this->container->lookup('optionsStore');
+    $optionsStore->load();
+    $optionsStore->setOption('highlightSyntaxHighlighter', false);
 
     $actual = $this->detector->isDetectable('SyntaxHighlighter');
     $this->assertFalse($actual);
   }
 
   function test_it_can_detect_presence_of_languages() {
-    $optionStore = $this->container->lookup('optionStore');
-    $optionStore->load();
-    $optionStore->setOption('highlightSyntaxHighlighter', true);
+    $optionsStore = $this->container->lookup('optionsStore');
+    $optionsStore->load();
+    $optionsStore->setOption('highlightSyntaxHighlighter', true);
 
     $content = '
 <pre class="brush: php; title: ; notranslate" title="">
@@ -96,9 +84,9 @@ function load($num = null) {
   }
 
   function test_it_can_detect_absence_of_languages() {
-    $optionStore = $this->container->lookup('optionStore');
-    $optionStore->load();
-    $optionStore->setOption('highlightSyntaxHighlighter', true);
+    $optionsStore = $this->container->lookup('optionsStore');
+    $optionsStore->load();
+    $optionsStore->setOption('highlightSyntaxHighlighter', true);
 
     $content = 'foo';
 
@@ -109,9 +97,9 @@ function load($num = null) {
   }
 
   function test_it_can_check_and_detect_presence_of_languages() {
-    $optionStore = $this->container->lookup('optionStore');
-    $optionStore->load();
-    $optionStore->setOption('highlightSyntaxHighlighter', true);
+    $optionsStore = $this->container->lookup('optionsStore');
+    $optionsStore->load();
+    $optionsStore->setOption('highlightSyntaxHighlighter', true);
 
     $content = '
 <pre class="brush: php; title: ; notranslate" title="">
@@ -128,9 +116,9 @@ function load($num = null) {
   }
 
   function test_it_can_scan_content_for_languages() {
-    $optionStore = $this->container->lookup('optionStore');
-    $optionStore->load();
-    $optionStore->setOption('highlightSyntaxHighlighter', true);
+    $optionsStore = $this->container->lookup('optionsStore');
+    $optionsStore->load();
+    $optionsStore->setOption('highlightSyntaxHighlighter', true);
 
     $content = '<pre class="brush: php; title: ; notranslate" title="">
 function load($num = null) {
@@ -146,9 +134,9 @@ function load($num = null) {
   }
 
   function test_it_can_scan_content_without_languages() {
-    $optionStore = $this->container->lookup('optionStore');
-    $optionStore->load();
-    $optionStore->setOption('highlightSyntaxHighlighter', true);
+    $optionsStore = $this->container->lookup('optionsStore');
+    $optionsStore->load();
+    $optionsStore->setOption('highlightSyntaxHighlighter', true);
 
     $content = 'foo';
 

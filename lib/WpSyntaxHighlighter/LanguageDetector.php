@@ -2,14 +2,13 @@
 
 namespace WpSyntaxHighlighter;
 
-use WordPress\Logger;
-
 class LanguageDetector {
 
   public $languageLoader;
+  public $optionsStore;
 
   function needs() {
-    return array('languageLoader', 'optionStore');
+    return array('languageLoader', 'optionsStore');
   }
 
   function enable() {
@@ -50,7 +49,7 @@ class LanguageDetector {
 
   function isDetectable($name) {
     $option = "highlight$name";
-    return $this->optionStore->getOption($option);
+    return $this->optionsStore->getOption($option);
   }
 
   function patternFor($type) {

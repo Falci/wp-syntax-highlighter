@@ -6,22 +6,22 @@ use Encase\Container;
 
 class ShortcodeTest extends \WP_UnitTestCase {
 
+  public $container;
+  public $pluginMeta;
+  public $loader;
+  public $shortcode;
+
   function setUp() {
     parent::setUp();
 
-    $this->pluginSlug = 'wp-syntax-highlighter';
-    $this->pluginFile = getcwd() . '/' . $this->pluginSlug . '.php';
+    $this->pluginMeta = new PluginMeta('wp-syntax-highlighter.php');
 
     $container = new Container();
-    $container->object('pluginSlug', $this->pluginSlug);
-    $container->object('pluginFile', $this->pluginFile);
-    $container->object('pluginVersion', '0.1.0');
-    $container->factory('script', 'WordPress\Script');
-    $container->singleton('scriptLoader', 'WordPress\ScriptLoader');
-    $container->factory('stylesheet', 'WordPress\Stylesheet');
-    $container->singleton('stylesheetLoader', 'WordPress\StylesheetLoader');
-    $container->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader');
-    $container->singleton('shortcode', 'WpSyntaxHighlighter\Shortcode');
+    $container
+      ->object('pluginMeta', $this->pluginMeta)
+      ->object('assetLoader', new \Arrow\AssetManager\AssetManager($container))
+      ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
+      ->singleton('shortcode', 'WpSyntaxHighlighter\Shortcode');
 
     $this->container = $container;
     $this->loader = $container->lookup('languageLoader');
@@ -79,5 +79,4 @@ class ShortcodeTest extends \WP_UnitTestCase {
     $actual = $this->loader->getLanguages();
     $this->assertEquals(array('foo'), $actual);
   }
-
 }
