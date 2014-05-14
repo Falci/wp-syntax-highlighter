@@ -176,6 +176,10 @@ contents of your posts are only scanned to pick any embedded languages.
 
 == Changelog ==
 
+= 0.2.0 =
+
+* Switches to Arrow 0.4.0.
+
 = 0.1.2 =
 
 * First release on wordpress.org
