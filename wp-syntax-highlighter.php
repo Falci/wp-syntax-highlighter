@@ -26,12 +26,10 @@ function wp_syntax_highlighter_register() {
   require_once(__DIR__ . '/vendor/dsawardekar/arrow/lib/Arrow/ArrowPluginLoader.php');
 
   $loader = ArrowPluginLoader::getInstance();
-  $loader->register('wp-syntax-highlighter', '0.4.0', 'wp_syntax_highlighter_load');
+  $loader->register(__FILE__, '0.5.1', 'wp_syntax_highlighter_load');
 }
 
 function wp_syntax_highlighter_load() {
-  require_once(__DIR__ . '/vendor/autoload.php');
-
   $plugin = \WpSyntaxHighlighter\Plugin::create(__FILE__);
   $plugin->enable();
 }
