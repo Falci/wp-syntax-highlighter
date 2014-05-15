@@ -2,7 +2,7 @@
 /*
 Plugin Name: wp-syntax-highlighter
 Description: WordPress Syntax Highlighter using Highlight.js
-Version: 0.2.2
+Version: 0.3.0
 Author: Darshan Sawardekar
 Author URI: http://pressing-matters.io/
 Plugin URI: http://wordpress.org/plugins/wp-syntax-highlighter
@@ -26,12 +26,10 @@ function wp_syntax_highlighter_register() {
   require_once(__DIR__ . '/vendor/dsawardekar/arrow/lib/Arrow/ArrowPluginLoader.php');
 
   $loader = ArrowPluginLoader::getInstance();
-  $loader->register('wp-syntax-highlighter', '0.4.0', 'wp_syntax_highlighter_load');
+  $loader->register(__FILE__, '0.5.1', 'wp_syntax_highlighter_load');
 }
 
 function wp_syntax_highlighter_load() {
-  require_once(__DIR__ . '/vendor/autoload.php');
-
   $plugin = \WpSyntaxHighlighter\Plugin::create(__FILE__);
   $plugin->enable();
 }
