@@ -20,7 +20,7 @@ class ShortcodeLinkerTest extends \WP_UnitTestCase {
     $container = new Container();
     $container
       ->object('pluginMeta', $this->pluginMeta)
-      ->object('assetLoader', new \Arrow\AssetManager\AssetManager($container))
+      ->packager('optionsPackager', 'Arrow\Options\Packager')
       ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
       ->factory('shortcode', 'WpSyntaxHighlighter\Shortcode')
       ->singleton('linker', 'WpSyntaxHighlighter\ShortcodeLinker');
