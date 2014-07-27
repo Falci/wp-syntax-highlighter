@@ -10,9 +10,9 @@ class PluginMeta extends \Arrow\PluginMeta {
 
   function getDefaultOptions() {
     return array(
-      'theme' => 'default',
+      'theme'                      => 'default',
       'highlightSyntaxHighlighter' => true,
-      'highlightGeshi' => true
+      'highlightGeshi'             => true
     );
   }
 
