@@ -1,0 +1,34 @@
+{
+  "name": "wp-spoiler-alert",
+  "version": "0.0.0",
+  "description": "wp-spoiler-alert",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Darshan Sawardekar <darshan@sawardekar.org> (http://github.com/dsawardekar)",
+  "license": "ISC",
+  "dependencies": {
+    "es6-promise": "~1.0.0",
+    "es5-shim": "~4.0.0",
+    "envify": "~1.2.1",
+    "react": "~0.10.0",
+    "jquery": "~2.1.1",
+    "underscore.string": "~2.3.3"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1",
+    "mocha": "~1.20.1",
+    "testem": "~0.6.17",
+    "webpack": "~1.3.2-beta3",
+    "glob": "~4.0.4",
+    "sinon-chai": "~2.5.0",
+    "sinon": "~1.10.3",
+    "jquery-mockjax": "~1.5.3",
+    "jsx-loader": "~0.11.0",
+    "imports-loader": "~0.6.3",
+    "script-loader": "~0.5.2",
+    "css-loader": "~0.7.0",
+    "extract-text-webpack-plugin": "~0.2.2"
+  }
+}
