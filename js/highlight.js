@@ -1,4 +1,4 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslib=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslib=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Highlight = function() {
 
   /* Utility functions */
@@ -16,21 +16,9 @@ var Highlight = function() {
     return match && match.index == 0;
   }
 
-  function blockText(block) {
-    return Array.prototype.map.call(block.childNodes, function(node) {
-      if (node.nodeType == 3) {
-        return options.useBR ? node.nodeValue.replace(/\n/g, '') : node.nodeValue;
-      }
-      if (tag(node) == 'br') {
-        return '\n';
-      }
-      return blockText(node);
-    }).join('');
-  }
-
   function blockLanguage(block) {
     var classes = (block.className + ' ' + (block.parentNode ? block.parentNode.className : '')).split(/\s+/);
-    classes = classes.map(function(c) {return c.replace(/^language-/, '');});
+    classes = classes.map(function(c) {return c.replace(/^lang(uage)?-/, '');});
     return classes.filter(function(c) {return getLanguage(c) || c == 'no-highlight';})[0];
   }
 
@@ -170,7 +158,7 @@ var Highlight = function() {
       if (mode.keywords) {
         var compiled_keywords = {};
 
-        function flatten(className, str) {
+        var flatten = function(className, str) {
           if (language.case_insensitive) {
             str = str.toLowerCase();
           }
@@ -178,7 +166,7 @@ var Highlight = function() {
             var pair = kw.split('|');
             compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
           });
-        }
+        };
 
         if (typeof mode.keywords == 'string') { // string
           flatten('keyword', mode.keywords);
@@ -193,7 +181,7 @@ var Highlight = function() {
 
       if (parent) {
         if (mode.beginKeywords) {
-          mode.begin = mode.beginKeywords.split(' ').join('|');
+          mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')\\b';
         }
         if (!mode.begin)
           mode.begin = /\B|\b/;
@@ -230,10 +218,9 @@ var Highlight = function() {
 
       var terminators =
         mode.contains.map(function(c) {
-          return c.beginKeywords ? '\\.?\\b(' + c.begin + ')\\b\\.?' : c.begin;
+          return c.beginKeywords ? '\\.?(' + c.begin + ')\\.?' : c.begin;
         })
-        .concat([mode.terminator_end])
-        .concat([mode.illegal])
+        .concat([mode.terminator_end, mode.illegal])
         .map(reStr)
         .filter(Boolean);
       mode.terminators = terminators.length ? langRe(terminators.join('|'), true) : {exec: function(s) {return null;}};
@@ -292,26 +279,25 @@ var Highlight = function() {
     }
 
     function processKeywords() {
-      var buffer = escape(mode_buffer);
       if (!top.keywords)
-        return buffer;
+        return escape(mode_buffer);
       var result = '';
       var last_index = 0;
       top.lexemesRe.lastIndex = 0;
-      var match = top.lexemesRe.exec(buffer);
+      var match = top.lexemesRe.exec(mode_buffer);
       while (match) {
-        result += buffer.substr(last_index, match.index - last_index);
+        result += escape(mode_buffer.substr(last_index, match.index - last_index));
         var keyword_match = keywordMatch(top, match);
         if (keyword_match) {
           relevance += keyword_match[1];
-          result += buildSpan(keyword_match[0], match[0]);
+          result += buildSpan(keyword_match[0], escape(match[0]));
         } else {
-          result += match[0];
+          result += escape(match[0]);
         }
         last_index = top.lexemesRe.lastIndex;
-        match = top.lexemesRe.exec(buffer);
+        match = top.lexemesRe.exec(mode_buffer);
       }
-      return result + buffer.substr(last_index);
+      return result + escape(mode_buffer.substr(last_index));
     }
 
     function processSubLanguage() {
@@ -412,7 +398,7 @@ var Highlight = function() {
     var result = '';
     for(var current = top; current != language; current = current.parent) {
       if (current.className) {
-        result = buildSpan(current.className, result, true);
+        result += buildSpan(current.className, result, true);
       }
     }
     var mode_buffer = '';
@@ -513,7 +499,9 @@ var Highlight = function() {
   two optional parameters for fixMarkup.
   */
   function highlightBlock(block) {
-    var text = blockText(block);
+    var text = options.useBR ? block.innerHTML
+      .replace(/\n/g,'').replace(/<br>|<br [^>]*>/g, '\n').replace(/<[^>]*>/g,'')
+      : block.textContent;
     var language = blockLanguage(block);
     if (language == 'no-highlight')
         return;
@@ -584,6 +572,10 @@ var Highlight = function() {
     }
   }
 
+  function listLanguages() {
+    return Object.keys(languages);
+  }
+
   function getLanguage(name) {
     return languages[name] || languages[aliases[name]];
   }
@@ -598,6 +590,7 @@ var Highlight = function() {
   this.initHighlighting = initHighlighting;
   this.initHighlightingOnLoad = initHighlightingOnLoad;
   this.registerLanguage = registerLanguage;
+  this.listLanguages = listLanguages;
   this.getLanguage = getLanguage;
   this.inherit = inherit;
 
@@ -625,17 +618,23 @@ var Highlight = function() {
     illegal: '\\n',
     contains: [this.BACKSLASH_ESCAPE]
   };
+  this.PHRASAL_WORDS_MODE = {
+    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/
+  };
   this.C_LINE_COMMENT_MODE = {
     className: 'comment',
-    begin: '//', end: '$'
+    begin: '//', end: '$',
+    contains: [this.PHRASAL_WORDS_MODE]
   };
   this.C_BLOCK_COMMENT_MODE = {
     className: 'comment',
-    begin: '/\\*', end: '\\*/'
+    begin: '/\\*', end: '\\*/',
+    contains: [this.PHRASAL_WORDS_MODE]
   };
   this.HASH_COMMENT_MODE = {
     className: 'comment',
-    begin: '#', end: '$'
+    begin: '#', end: '$',
+    contains: [this.PHRASAL_WORDS_MODE]
   };
   this.NUMBER_MODE = {
     className: 'number',
@@ -650,6 +649,19 @@ var Highlight = function() {
   this.BINARY_NUMBER_MODE = {
     className: 'number',
     begin: this.BINARY_NUMBER_RE,
+    relevance: 0
+  };
+  this.CSS_NUMBER_MODE = {
+    className: 'number',
+    begin: this.NUMBER_RE + '(' +
+      '%|em|ex|ch|rem'  +
+      '|vw|vh|vmin|vmax' +
+      '|cm|mm|in|pt|pc|px' +
+      '|deg|grad|rad|turn' +
+      '|s|ms' +
+      '|Hz|kHz' +
+      '|dpi|dpcm|dppx' +
+      ')?',
     relevance: 0
   };
   this.REGEXP_MODE = {
@@ -677,6 +689,5 @@ var Highlight = function() {
   };
 };
 module.exports = Highlight;
-},{}]},{},[1])
-(1)
+},{}]},{},[1])(1)
 });

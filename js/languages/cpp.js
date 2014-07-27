@@ -1,4 +1,4 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslangcpp=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslangcpp=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP_KEYWORDS = {
     keyword: 'false int float while private char catch export virtual operator sizeof ' +
@@ -19,7 +19,7 @@ module.exports = function(hljs) {
       'vfprintf vprintf vsprintf'
   };
   return {
-    aliases: ['c'],
+    aliases: ['c', 'h', 'c++', 'h++'],
     keywords: CPP_KEYWORDS,
     illegal: '</',
     contains: [
@@ -39,8 +39,13 @@ module.exports = function(hljs) {
       {
         className: 'preprocessor',
         begin: '#', end: '$',
+        keywords: 'if else elif endif define undef warning error line pragma',
         contains: [
-          {begin: 'include\\s*<', end: '>', illegal: '\\n'},
+          {
+            begin: 'include\\s*[<"]', end: '[>"]',
+            keywords: 'include',
+            illegal: '\\n'
+          },
           hljs.C_LINE_COMMENT_MODE
         ]
       },
@@ -48,12 +53,13 @@ module.exports = function(hljs) {
         className: 'stl_container',
         begin: '\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
         keywords: CPP_KEYWORDS,
-        relevance: 10,
         contains: ['self']
+      },
+      {
+        begin: hljs.IDENT_RE + '::'
       }
     ]
   };
 };
-},{}]},{},[1])
-(1)
+},{}]},{},[1])(1)
 });
