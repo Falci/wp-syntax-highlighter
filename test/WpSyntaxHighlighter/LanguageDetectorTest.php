@@ -18,8 +18,7 @@ class LanguageDetectorTest extends \WP_UnitTestCase {
     $container = new Container();
     $container
       ->object('pluginMeta', $this->pluginMeta)
-      ->object('assetManager', new \Arrow\AssetManager\AssetManager($container))
-      ->object('optionsManager', new OptionsManager($container))
+      ->packager('optionsPackager', 'Arrow\Options\Packager')
       ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
       ->singleton('languageDetector', 'WpSyntaxHighlighter\LanguageDetector');
 

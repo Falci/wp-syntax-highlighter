@@ -10,9 +10,9 @@ class PluginMeta extends \Arrow\PluginMeta {
 
   function getDefaultOptions() {
     return array(
-      'theme' => 'default',
+      'theme'                      => 'default',
       'highlightSyntaxHighlighter' => true,
-      'highlightGeshi' => true
+      'highlightGeshi'             => true
     );
   }
 
@@ -25,6 +25,17 @@ class PluginMeta extends \Arrow\PluginMeta {
     array_push($themes, 'custom');
 
     return $themes;
+  }
+
+  function getOptionsContext() {
+    return $this->lookup('optionsStore')->getOptions();
+  }
+
+  function getLocalizedStrings() {
+    $strings = array();
+    $strings['themes'] = $this->getThemes();
+
+    return $strings;
   }
 
 }

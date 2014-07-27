@@ -1,4 +1,4 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslangscala=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslangscala=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function(hljs) {
   var ANNOTATION = {
     className: 'annotation', begin: '@[A-Za-z]+'
@@ -7,6 +7,10 @@ module.exports = function(hljs) {
     className: 'string',
     begin: 'u?r?"""', end: '"""',
     relevance: 10
+  };
+  var SYMBOL = {
+    className: 'symbol',
+    begin: '\'\\w[\\w\\d_]*(?!\')'
   };
   return {
     keywords:
@@ -24,10 +28,12 @@ module.exports = function(hljs) {
         relevance: 10
       },
       hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE,
-      STRING, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE,
+      STRING, hljs.QUOTE_STRING_MODE,
+      SYMBOL,
       {
         className: 'class',
-        begin: '((case )?class |object |trait )', end: '({|$)', // beginKeywords won't work because a single "case" shouldn't start this mode
+        begin: '((case )?class |object |trait )', // beginKeywords won't work because a single "case" shouldn't start this mode
+        end: '({|$)', excludeEnd: true,
         illegal: ':',
         keywords: 'case class trait object',
         contains: [
@@ -40,7 +46,7 @@ module.exports = function(hljs) {
             className: 'params',
             begin: '\\(', end: '\\)',
             contains: [
-              hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, STRING,
+              hljs.QUOTE_STRING_MODE, STRING,
               ANNOTATION
             ]
           }
@@ -51,6 +57,5 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}]},{},[1])
-(1)
+},{}]},{},[1])(1)
 });

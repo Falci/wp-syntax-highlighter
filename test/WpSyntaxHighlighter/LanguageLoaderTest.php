@@ -18,7 +18,7 @@ class LanguageLoaderTest extends \WP_UnitTestCase {
     $container = new Container();
     $container
       ->object('pluginMeta', $this->pluginMeta)
-      ->object('assetManager', new \Arrow\AssetManager\AssetManager($container))
+      ->packager('optionsPackager', 'Arrow\Options\Packager')
       ->singleton('loader', 'WpSyntaxHighlighter\LanguageLoader');
 
     $this->container = $container;

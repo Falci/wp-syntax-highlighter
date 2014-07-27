@@ -1,4 +1,4 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslangruby=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.highlightjslangruby=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS =
@@ -8,6 +8,10 @@ module.exports = function(hljs) {
   var YARDOCTAG = {
     className: 'yardoctag',
     begin: '@[A-Za-z]+'
+  };
+  var IRB_OBJECT = {
+    className: 'value',
+    begin: '#<', end: '>'
   };
   var COMMENT = {
     className: 'comment',
@@ -40,26 +44,11 @@ module.exports = function(hljs) {
       {begin: '%[qw]?\\(', end: '\\)'},
       {begin: '%[qw]?\\[', end: '\\]'},
       {begin: '%[qw]?{', end: '}'},
-      {
-        begin: '%[qw]?<', end: '>',
-        relevance: 10
-      },
-      {
-        begin: '%[qw]?/', end: '/',
-        relevance: 10
-      },
-      {
-        begin: '%[qw]?%', end: '%',
-        relevance: 10
-      },
-      {
-        begin: '%[qw]?-', end: '-',
-        relevance: 10
-      },
-      {
-        begin: '%[qw]?\\|', end: '\\|',
-        relevance: 10
-      },
+      {begin: '%[qw]?<', end: '>'},
+      {begin: '%[qw]?/', end: '/'},
+      {begin: '%[qw]?%', end: '%'},
+      {begin: '%[qw]?-', end: '-'},
+      {begin: '%[qw]?\\|', end: '\\|'},
       {
         // \B in the beginning suppresses recognition of ?-sequences where ?
         // is the last character of a preceding identifier, as in: `func?4`
@@ -75,6 +64,7 @@ module.exports = function(hljs) {
 
   var RUBY_DEFAULT_CONTAINS = [
     STRING,
+    IRB_OBJECT,
     COMMENT,
     {
       className: 'class',
@@ -131,6 +121,7 @@ module.exports = function(hljs) {
     { // regexp container
       begin: '(' + hljs.RE_STARTERS_RE + ')\\s*',
       contains: [
+        IRB_OBJECT,
         COMMENT,
         {
           className: 'regexp',
@@ -150,12 +141,47 @@ module.exports = function(hljs) {
   ];
   SUBST.contains = RUBY_DEFAULT_CONTAINS;
   PARAMS.contains = RUBY_DEFAULT_CONTAINS;
+  
+  var IRB_DEFAULT = [
+    {
+      relevance: 1,
+      className: 'output',
+      begin: '^\\s*=> ', end: "$",
+      returnBegin: true,
+      contains: [
+        {
+          className: 'status',
+          begin: '^\\s*=>'
+        },
+        {
+          begin: ' ', end: '$',
+          contains: RUBY_DEFAULT_CONTAINS
+        }
+      ]
+    },
+    {
+      relevance: 1,
+      className: 'input',
+      begin: '^[^ ][^=>]*>+ ', end: "$",
+      returnBegin: true,
+      contains: [
+        {
+          className: 'prompt',
+          begin: '^[^ ][^=>]*>+'
+        },
+        {
+          begin: ' ', end: '$',
+          contains: RUBY_DEFAULT_CONTAINS
+        }
+      ]
+    }
+  ];
 
   return {
+    aliases: ['rb', 'gemspec', 'podspec', 'thor', 'irb'],
     keywords: RUBY_KEYWORDS,
-    contains: RUBY_DEFAULT_CONTAINS
+    contains: IRB_DEFAULT.concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}]},{},[1])
-(1)
+},{}]},{},[1])(1)
 });

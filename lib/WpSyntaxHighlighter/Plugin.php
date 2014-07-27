@@ -2,35 +2,23 @@
 
 namespace WpSyntaxHighlighter;
 
-use Arrow\AssetManager\AssetManager;
-
 class Plugin extends \Arrow\Plugin {
 
   function __construct($file) {
     parent::__construct($file);
 
     $this->container
-      ->object('pluginMeta', new PluginMeta($file))
-      ->object('assetManager', new AssetManager($this->container))
-      ->object('optionsManager', new OptionsManager($this->container))
-      ->factory('shortcode', 'WpSyntaxHighlighter\Shortcode')
-      ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
-      ->singleton('shortcodeLinker', 'WpSyntaxHighlighter\ShortcodeLinker')
-      ->singleton('languageDetector', 'WpSyntaxHighlighter\LanguageDetector');
+      ->object('pluginMeta'           , new PluginMeta($file))
+      ->packager('optionsPackager'    , 'Arrow\Options\Packager')
+      ->singleton('optionsController' , 'WpSyntaxHighlighter\OptionsController')
+      ->factory('shortcode'           , 'WpSyntaxHighlighter\Shortcode')
+      ->singleton('languageLoader'    , 'WpSyntaxHighlighter\LanguageLoader')
+      ->singleton('shortcodeLinker'   , 'WpSyntaxHighlighter\ShortcodeLinker')
+      ->singleton('languageDetector'  , 'WpSyntaxHighlighter\LanguageDetector');
   }
 
   function enable() {
-    add_action('admin_init', array($this, 'initAdmin'));
-    add_action('admin_menu', array($this, 'initAdminMenu'));
     add_action('init', array($this, 'initFrontEnd'));
-  }
-
-  function initAdmin() {
-    $this->lookup('optionsPostHandler')->enable();
-  }
-
-  function initAdminMenu() {
-    $this->lookup('optionsPage')->register();
   }
 
   function initFrontEnd() {
