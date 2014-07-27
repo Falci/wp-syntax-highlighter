@@ -8,13 +8,13 @@ class Plugin extends \Arrow\Plugin {
     parent::__construct($file);
 
     $this->container
-      ->object('pluginMeta', new PluginMeta($file))
-      ->packager('optionsPackager', 'Arrow\Options\Packager')
-      ->singleton('optionsController', 'WpSyntaxHighlighter\OptionsController')
-      ->factory('shortcode', 'WpSyntaxHighlighter\Shortcode')
-      ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
-      ->singleton('shortcodeLinker', 'WpSyntaxHighlighter\ShortcodeLinker')
-      ->singleton('languageDetector', 'WpSyntaxHighlighter\LanguageDetector');
+      ->object('pluginMeta'           , new PluginMeta($file))
+      ->packager('optionsPackager'    , 'Arrow\Options\Packager')
+      ->singleton('optionsController' , 'WpSyntaxHighlighter\OptionsController')
+      ->factory('shortcode'           , 'WpSyntaxHighlighter\Shortcode')
+      ->singleton('languageLoader'    , 'WpSyntaxHighlighter\LanguageLoader')
+      ->singleton('shortcodeLinker'   , 'WpSyntaxHighlighter\ShortcodeLinker')
+      ->singleton('languageDetector'  , 'WpSyntaxHighlighter\LanguageDetector');
   }
 
   function enable() {
