@@ -27,4 +27,15 @@ class PluginMeta extends \Arrow\PluginMeta {
     return $themes;
   }
 
+  function getOptionsContext() {
+    return $this->lookup('optionsStore')->getOptions();
+  }
+
+  function getLocalizedStrings() {
+    $strings = array();
+    $strings['themes'] = $this->getThemes();
+
+    return $strings;
+  }
+
 }

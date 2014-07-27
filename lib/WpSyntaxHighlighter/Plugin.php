@@ -2,8 +2,6 @@
 
 namespace WpSyntaxHighlighter;
 
-use Arrow\AssetManager\AssetManager;
-
 class Plugin extends \Arrow\Plugin {
 
   function __construct($file) {
@@ -11,8 +9,7 @@ class Plugin extends \Arrow\Plugin {
 
     $this->container
       ->object('pluginMeta', new PluginMeta($file))
-      ->object('assetManager', new AssetManager($this->container))
-      ->object('optionsManager', new OptionsManager($this->container))
+      ->packager('optionsPackager', 'Arrow\Options\Packager')
       ->factory('shortcode', 'WpSyntaxHighlighter\Shortcode')
       ->singleton('languageLoader', 'WpSyntaxHighlighter\LanguageLoader')
       ->singleton('shortcodeLinker', 'WpSyntaxHighlighter\ShortcodeLinker')
@@ -20,17 +17,7 @@ class Plugin extends \Arrow\Plugin {
   }
 
   function enable() {
-    add_action('admin_init', array($this, 'initAdmin'));
-    add_action('admin_menu', array($this, 'initAdminMenu'));
     add_action('init', array($this, 'initFrontEnd'));
-  }
-
-  function initAdmin() {
-    $this->lookup('optionsPostHandler')->enable();
-  }
-
-  function initAdminMenu() {
-    $this->lookup('optionsPage')->register();
   }
 
   function initFrontEnd() {
