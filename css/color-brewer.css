@@ -8,8 +8,10 @@ Ported by Fabrício Tavares de Oliveira
 
 .hljs {
   display: block;
+  overflow-x: auto;
   padding: 0.5em;
   background: #fff;
+  -webkit-text-size-adjust: none;
 }
 
 .hljs,
@@ -125,7 +127,8 @@ Ported by Fabrício Tavares de Oliveira
 .hljs-winutils,
 .bash .hljs-variable,
 .apache .hljs-tag,
-.go .hljs-typename,
+.hljs-type,
+.hljs-typename,
 .tex .hljs-command,
 .asciidoc .hljs-strong,
 .markdown .hljs-strong,

@@ -210,6 +210,11 @@ namespace :generator do
     File.write('lib/WpSyntaxHighlighter/Languages.php', template.result(vars))
   end
 
+  desc 'Sync Themes'
+  task 'sync_themes' do
+    sh 'rsync -a tmp/highlight.js/src/styles/*.css css'
+  end
+
   desc 'Generate Themes'
   task 'generate_themes' do
     themes = Dir.glob('css/*.css').map do |file|
