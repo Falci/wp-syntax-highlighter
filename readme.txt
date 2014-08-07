@@ -3,8 +3,8 @@ Contributors: dsawardekar
 Donate link: http://pressing-matters.io/
 Tags: syntax highlighter, code highlighter, source highlighter, sourcecode highlighter
 Requires at least: 3.5.0
-Tested up to: 3.9
-Stable tag: 0.5.0
+Tested up to: 3.9.2
+Stable tag: 0.5.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -175,6 +175,10 @@ Yes. The code block scanning is done clientside by highlight.js. The
 contents of your posts are only scanned to pick any embedded languages.
 
 == Changelog ==
+
+= 0.5.1 =
+
+* Upgrades to Arrow 1.8.0.
 
 = 0.5.0 =
 
